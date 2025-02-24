@@ -35,7 +35,6 @@ class ValidacaoNovoCnpj {
             $valor = self::converterCaracter($cnpj[$i]);
             $multiplicador = self::$multiplicadores[$i + $shift];
             $soma += $valor * $multiplicador;
-            echo "Caracter: {$cnpj[$i]}, Valor: $valor, Multiplicador: $multiplicador, Soma Parcial: $soma<br>";
         }
         return $soma % 11;
     }
@@ -58,18 +57,13 @@ class ValidacaoNovoCnpj {
         $baseCnpj = substr($cnpjNormalizado, 0, 12);
 
         $soma1 = self::multiplicarSomarDividir($baseCnpj, 12, 1);
-        echo "SOMA: $soma1 <br>";
         $dv1 = $soma1 < 2 ? 0 : 11 - $soma1;
-        echo "$baseCnpj = Primeiro DV calculado: $dv1<br>";
 
         $soma2 = self::multiplicarSomarDividir($baseCnpj . $dv1, 13, 0);
-        echo "SOMA: $soma2 <br>";
         $dv2 = $soma2 < 2 ? 0 : 11 - $soma2;
-        echo "$baseCnpj = Segundo DV calculado: $dv2<br>";
 
         $dvOriginal1 = self::converterCaracter($cnpjNormalizado[12]);
         $dvOriginal2 = self::converterCaracter($cnpjNormalizado[13]);
-        echo "DVs Originais: $dvOriginal1, $dvOriginal2<br>";
 
         return $dv1 == $dvOriginal1 && $dv2 == $dvOriginal2;
     }
